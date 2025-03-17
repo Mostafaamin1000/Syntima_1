@@ -2,6 +2,7 @@ import mongoose, { Schema, Types, model } from 'mongoose'
 
 
 const schema = new Schema ({
+    category:{type:Types.ObjectId, ref:"Category"},
     level:{type:Types.ObjectId, ref:"Level"},
     sign_Url:String,
     sign_Text:String, 

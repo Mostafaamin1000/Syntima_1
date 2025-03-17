@@ -1,14 +1,29 @@
-import { Router } from 'express'
-import { AddQuestions, deleteQuestions, getAllQuestions, getoneQuestions, updateQuestions } from './question.controller.js'
-import { uploadSinleFile } from '../../fileUpload/fileUpload.js'
-const  QuestionRouter =Router()
+import { Router } from "express";
+import {
+    AddQuestions,
+    deleteQuestion,
+    getAllQuestions,
+    getOneQuestion,
+    updateQuestion
+} from "./question.controller.js";
+import { uploadMixOFFiles } from "../../fileUpload/fileUpload.js";
+
+const QuestionRouter = Router();
+
+const uploadFields = [
+    { name: "sign_Urls", maxCount: 2 } // Allows uploading up to 2 sign images
+];
+
+// Route to Add or Get All Questions
+QuestionRouter.route('/')
+    .post(uploadMixOFFiles([{ name: "sign_Url", maxCount: 2 }], "questions"), AddQuestions)
+    .get(getAllQuestions);
 
 
-QuestionRouter.route('/').post(uploadSinleFile("sign_Url","questions"),AddQuestions).get(getAllQuestions)
+// Routes for Individual Question Operations
+QuestionRouter.route("/:id")
+    .delete(deleteQuestion)
+    .put(uploadMixOFFiles(uploadFields, "questions"), updateQuestion)
+    .get(getOneQuestion);
 
-QuestionRouter.route('/:id').delete(deleteQuestions).put(uploadSinleFile("sign_Url","questions"),updateQuestions).get(getoneQuestions)
-
-
-
-
-export default QuestionRouter
+export default QuestionRouter;

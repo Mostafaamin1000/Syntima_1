@@ -15,8 +15,15 @@ let user = await User.findById(req.params.id)
     res.status(201).json({message:"User ---->" , user})
 })
 
+const uploadProfilePic =catchError( async(req,res)=>{
+if(!req.file) return next(new AppError('image not found',404))
+    req.user.image=req.file.filename
+    await req.user.save()
+    res.status(201).json({message:"image uploaded .." ,user: req.user})
+})
+
 const updateUser =catchError( async (req,res,next)=>{
-    // if(req.body.profile_Picture) req.body.profile_Picture=req.file.filename
+    if(req.body.image)  req.body.image=req.file.filename
     let user = await User.findByIdAndUpdate(req.params.id, req.body,{new:true})
     user || next(new AppError('User Not found',404))
     !user || res.json({message:"Success ..", user})
@@ -32,5 +39,6 @@ export {
     getallUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    uploadProfilePic
 }

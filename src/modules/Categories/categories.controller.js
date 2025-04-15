@@ -5,7 +5,7 @@ import { Category } from '../../../DB/models/category.schema.js'
 
 const addCategory =catchError(  async(req,res)=>{
     let category =await Category.insertMany(req.body)
-    res.status(200).json({message:"Created..", category })
+    res.status(201).json({message:"Created..", category })
     
     })
     

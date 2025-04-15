@@ -4,7 +4,7 @@ import {Schema , model} from 'mongoose'
 const schema = new Schema ({
 name:String
 },{
-    timestamps:false,
+    timestamps:true,
     versionKey:false,
     toJSON:{virtuals:true}
 })

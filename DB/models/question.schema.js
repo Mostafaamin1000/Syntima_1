@@ -3,7 +3,6 @@ import mongoose, { Schema, Types, model } from 'mongoose'
 
 const schema = new Schema ({
     level:{type:Types.ObjectId, ref:"Level"},
-    category:{type:Types.ObjectId, ref:"Category"},
     sign_Url:String,
     sign_Text:String, 
     type: { // Question types
@@ -23,6 +22,16 @@ const schema = new Schema ({
     timestamps: true,
     versionKey: false
 });
+
+
+schema.pre('save', function (next) {
+    // Filter options where score is 10 (or your threshold for "correct")
+    this.correctOptions = this.options
+      .filter(option => option.score === 10) // Adjust this condition based on your logic
+      .map(option => option.text); // Store the text of correct options
+    next();
+  });
+
 
 // Update URLs dynamically
 // schema.post('init', function (doc) {

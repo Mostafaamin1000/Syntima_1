@@ -4,8 +4,8 @@ import mongoose, { Schema, Types, model } from 'mongoose'
 const schema = new Schema ({
     level:{type:Types.ObjectId, ref:"Level"},
     category:{type:Types.ObjectId, ref:"Category"},
-    sign_Url:String,
-    sign_Text:String, 
+    sign_Url:{type:[String]},
+    sign_Text:{type:[String]}, 
     type: { // Question types
         type: String,
         required: true,
@@ -35,10 +35,10 @@ schema.pre('save', function (next) {
 
 
 // Update URLs dynamically
-// schema.post('init', function (doc) {
-//     if (doc.sign_Urls.length > 0) {
-//         doc.sign_Urls = doc.sign_Urls.map(url => process.env.BASE_URL + "questions/" + url);
-//     }
-// });
+schema.post('init', function (doc) {
+    if (doc.sign_Urls.length > 0) {
+        doc.sign_Urls = doc.sign_Urls.map(url => process.env.BASE_URL + "questions/" + url);
+    }
+});
 
 export const Question = model('Question', schema);

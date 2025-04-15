@@ -3,6 +3,7 @@ import mongoose, { Schema, Types, model } from 'mongoose'
 
 const schema = new Schema ({
     level:{type:Types.ObjectId, ref:"Level"},
+    category:{type:Types.ObjectId, ref:"Category"},
     sign_Url:String,
     sign_Text:String, 
     type: { // Question types

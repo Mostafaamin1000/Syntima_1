@@ -11,7 +11,7 @@ import { uploadMixOFFiles } from "../../fileUpload/fileUpload.js";
 const QuestionRouter = Router();
 
 const uploadFields = [
-    { name: "sign_Urls", maxCount: 2 } // Allows uploading up to 2 sign images
+    { name: "sign_Url", maxCount: 2 } // Allows uploading up to 2 sign images
 ];
 
 // Route to Add or Get All Questions

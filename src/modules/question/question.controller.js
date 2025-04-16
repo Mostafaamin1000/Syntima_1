@@ -4,7 +4,7 @@ import { catchError } from "../../middlewares/catchError.js";
 // Add Question (Now supports multiple sign images)
 const AddQuestions = catchError(async (req, res, next) => {
     if (req.files && req.files.sign_Url) {
-        req.body.sign_Urls = req.files.sign_Url.map(file => file.filename);
+        req.body.sign_Url = req.files.sign_Url.map(file => file.filename); // Ensure to use 'sign_Url' as per your upload config
     }
 
     let question = await Question.create(req.body);

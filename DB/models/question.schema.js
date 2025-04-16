@@ -36,8 +36,8 @@ schema.pre('save', function (next) {
 
 // Update URLs dynamically
 schema.post('init', function (doc) {
-    if (doc.sign_Urls.length > 0) {
-        doc.sign_Urls = doc.sign_Urls.map(url => process.env.BASE_URL + "questions/" + url);
+    if (doc.sign_Url.length > 0) {
+        doc.sign_Url = doc.sign_Url.map(url => process.env.BASE_URL + "questions/" + url);
     }
 });
 

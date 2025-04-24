@@ -15,7 +15,7 @@ let user = await User.findById(req.params.id)
     res.status(201).json({message:"User ---->" , user})
 })
 
-const uploadProfilePic =catchError( async(req,res)=>{
+const uploadProfilePic =catchError( async(req,res,next)=>{
 if(!req.file) return next(new AppError('image not found',404))
     req.user.image=req.file.filename
     await req.user.save()

@@ -16,6 +16,9 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors())
 bootstrap(app)
 
+app.get('/',(req,res)=>{
+    res.send('Welcome to Synthima!')
+})
 
 //! for unfound Routes 
 app.use('*',(req,res,next)=>{

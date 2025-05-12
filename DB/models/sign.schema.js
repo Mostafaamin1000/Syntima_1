@@ -10,7 +10,7 @@ text:String
     versionKey:false
 })
 
-schema.post('init',function(doc){
+schema.post('init',function(req,doc){
     if(doc.sign_Url) doc.sign_Url = `${req.protocol}://${req.headers.host}/uploads/sign/` + doc.sign_Url
 })
 

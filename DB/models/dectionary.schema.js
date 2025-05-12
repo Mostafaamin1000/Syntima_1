@@ -8,7 +8,7 @@ const schema = new Schema ({
     versionKey:false
 })
 
-schema.post('init',function(doc){
+schema.post('init',function(req,doc){
     if(doc.gif_Url) doc.gif_Url =`${req.protocol}://${req.headers.host}/uploads/dectionary/` + doc.gif_Url
 })
 

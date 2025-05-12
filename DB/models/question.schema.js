@@ -35,7 +35,7 @@ schema.pre('save', function (next) {
 
 
 // Update URLs dynamically
-schema.post('init', function (doc) {
+schema.post('init', function (req, doc) {
     if (doc.sign_Url.length > 0) {
         doc.sign_Url = doc.sign_Url.map(url => `${req.protocol}://${req.headers.host}/uploads/questions/` + url);
     }

@@ -34,7 +34,7 @@ level:{
 //     this.password=bcrypt.hashSync(this.password,8)
 // })
 
-schema.post('init',function (doc){
+schema.post('init',function (req,doc){
     if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image
     })
 

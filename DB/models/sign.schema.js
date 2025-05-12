@@ -11,7 +11,7 @@ text:String
 })
 
 schema.post('init',function(doc){
-    if(doc.sign_Url) doc.sign_Url = process.env.BASE_URL+"sign/" + doc.sign_Url
+    if(doc.sign_Url) doc.sign_Url = `${req.protocol}://${req.headers.host}/uploads/sign/` + doc.sign_Url
 })
 
 export const Sign = model('Sign',schema)

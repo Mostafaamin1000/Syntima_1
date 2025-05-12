@@ -35,7 +35,7 @@ level:{
 // })
 
 schema.post('init',function (doc){
-    if(doc.image) doc.image = "http://localhost:3000/uploads/user/" + doc.image
+    if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image
     })
 
 schema.pre('findOneAndUpdate',function(){

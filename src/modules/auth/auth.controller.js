@@ -17,8 +17,6 @@ const signin = catchError(async (req, res, next) => {
 
   const match = bcrypt.compareSync(req.body.password, user.password);
   if (!match) return next(new AppError('Email or Password incorrect ..', 404));
-console.log("🔍 Checking user with email:", req.body.email);
-console.log("📡 DB connection state:", mongoose.connection.readyState);
 
   jwt.sign({ userId: user._id, name: user.name, role: user.role }, process.env.SECRET_KEY, (err, token) => {
     if (err) return next(new AppError("Token generation failed", 500));

@@ -8,7 +8,7 @@ user:{
     ref:'User'
 },
 question:{
-    type:Schema.Types.ObjectId,
+    type:mongoose.Types.ObjectId,
     ref:'Question'
 }
 

@@ -1,4 +1,4 @@
-import {Schema,model}from 'mongoose'
+import mongoose, {Schema,model}from 'mongoose'
 import bcrypt from'bcrypt'
 const schema= new Schema({
 name:String,
@@ -22,7 +22,7 @@ isActive:{
     default:false
 },
 level:{
-    type:Schema.Types.ObjectId,
+    type:mongoose.Types.ObjectId,
     ref:'Level'
 }
 

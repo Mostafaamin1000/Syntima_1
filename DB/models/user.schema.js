@@ -4,7 +4,7 @@ const schema= new Schema({
 name:String,
 email:String,
 password:String,
-image:String ,
+image: String,
 passwordChangedAt: Date ,
 role:{
     type:String,
@@ -34,9 +34,9 @@ level:{
 
 // ${req.protocol}://${req.headers.host}
 
-schema.post('init',function (req,doc){
-    if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image 
- })
+// schema.post('init',function (req,doc){
+//     if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image 
+//  })
 
 schema.pre('findOneAndUpdate',function(){
     if(this._update.password)  this._update.password =bcrypt.hashSync(this._update.password , 8)

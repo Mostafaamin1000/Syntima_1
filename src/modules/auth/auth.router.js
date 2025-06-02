@@ -11,9 +11,7 @@ const authRouter=Router()
 authRouter.post('/signup',Validate(signupVal),checkEmail,signup)
 authRouter.post('/signin',Validate(signinVal),signin)
 authRouter.patch('/changepassword',Validate(changePasswordVal),changeUserPassword)
-// 💡 Forgot Password
 authRouter.post('/forget-password',forgetPassword)
-// 🔄 Reset Password
-authRouter.post('/reset-password/:token',resetPassword)
+authRouter.post('/reset-password',resetPassword)
     
 export default authRouter   

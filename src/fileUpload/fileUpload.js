@@ -23,7 +23,7 @@ const fileUpload =(folderName)=>{
     return upload
 }   
 
-export const uploadSinleFile = (fieldName,folderName)=>{
+export const uploadSingleFile = (fieldName,folderName)=>{
     return fileUpload(folderName).single(fieldName)
 }
 

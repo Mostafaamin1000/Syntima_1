@@ -11,6 +11,8 @@ const signup =catchError( async(req,res,next)=>{
     await user.save()
     res.status(201).json({message:"User Created .." , user})
 })
+
+
 const signin = catchError(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email }).lean();
   if (!user) return next(new AppError('Email or Password incorrect ..', 404));
@@ -48,30 +50,23 @@ const changeUserPassword =catchError( async(req,res,next)=>{
         })
     })
 
-// 💡 Forgot Password
+//! Forgot Password
 const forgetPassword = catchError(async (req, res, next) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return next(new AppError('User not found', 404));
-console.log("USER OBJECT:", user);
-
-    // توليد OTP عشوائي من 6 أرقام
+    console.log("USER OBJECT:", user);
+    if (!user) return next(new AppError('User not found', 404));   
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // حفظ الـ OTP وتحديد انتهاء صلاحيته بعد 10 دقائق
     user.otpCode = otp;
-    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 دقائق
+    user.otpExpires = Date.now() + 10 * 60 * 1000;
     await user.save();
-
-    // إرسال الـ OTP بالإيميل
 const isEmailSent = await sendEmail({
     to: user.email,
     subject: 'Password Reset OTP',
     html: htmlTemplate(user.name || user.email.split('@')[0], otp)
 })
-
     res.status(200).json({ msg: 'OTP sent to email' });
-});
+})
 
 const resetPassword = catchError(async (req, res, next) => {
     const { email, otp, password } = req.body;

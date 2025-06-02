@@ -35,8 +35,8 @@ level:{
 // ${req.protocol}://${req.headers.host}
 
 schema.post('init',function (req,doc){
-    if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image
-    })
+    if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image 
+ })
 
 schema.pre('findOneAndUpdate',function(){
     if(this._update.password)  this._update.password =bcrypt.hashSync(this._update.password , 8)

@@ -15,16 +15,16 @@ let user = await User.findById(req.params.id)
     res.status(201).json({message:"User ---->" , user})
 })
 
-const uploadProfilePic =catchError( async(req,res,next)=>{
+const uploadProfilePic = catchError(async (req, res, next) => {
   if (!req.file) return next(new AppError('Image not found', 404));
-  if (!req.user) return next(new AppError('User not authenticated', 401));
-  if(req.user.image)  req.user.image = req.file.filename;
-  const updatedUser = await req.user.save();
-  res.status(201).json({
-    message: "Image uploaded successfully.",
-    user: updatedUser,
-  })
+  const user = await User.findById(req.user._id)
+  if (!user) return next(new AppError('User not found', 404));
+
+  user.image = req.file.filename
+  await user.save();
+  res.status(201).json({ message: "Image uploaded", user });
 })
+
 const updateUser =catchError( async (req,res,next)=>{
     if(req.body.image)  req.body.image=req.file.filename
     let user = await User.findByIdAndUpdate(req.params.id, req.body,{new:true})

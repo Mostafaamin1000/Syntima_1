@@ -53,6 +53,7 @@ const forgetPassword = catchError(async (req, res, next) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) return next(new AppError('User not found', 404));
+console.log("USER OBJECT:", user);
 
     // توليد OTP عشوائي من 6 أرقام
     const otp = Math.floor(100000 + Math.random() * 900000).toString();

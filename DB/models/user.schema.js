@@ -11,6 +11,8 @@ role:{
     enum:['admin','user'],
     default:'user'
 },
+otpCode: String,
+otpExpires: Date,
 user_points:{
     type:Number,
     default:0
@@ -30,9 +32,7 @@ level:{
     versionKey:false,
 })  
 
-// schema.pre('insertMany',function(){
-//     this.password=bcrypt.hashSync(this.password,8)
-// })
+// ${req.protocol}://${req.headers.host}
 
 schema.post('init',function (req,doc){
     if(doc.image) doc.image = `${req.protocol}://${req.headers.host}/uploads/user/` + doc.image

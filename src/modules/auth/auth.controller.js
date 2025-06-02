@@ -49,40 +49,45 @@ const changeUserPassword =catchError( async(req,res,next)=>{
             res.status(200).json({message:"Login Successfully  ..", token, user}  )
         })
     })
+
 // 💡 Forgot Password
-const forgetPassword = catchError(async (req,res,next)=>{
+const forgetPassword = catchError(async (req, res, next) => {
     const { email } = req.body;
-      const user = await User.findOne({ email });
-      if (!user) return next(new AppError('User not found', 404));
-        // إنشاء توكن مؤقت باستخدام JWT
-        const token = jwt.sign(
-          { id: user._id },
-          process.env.JWT_RESET_SECRET,
-          { expiresIn: '1h' }
-        );
-      await user.save();
-      const resetLink = `${req.protocol}://${req.headers.host}/reset-password/${token}`;
-     const isEmailSent = await sendEmail({
-          to : user.email,
-          subject : 'Password Reset',
-          html: htmlTemplate().replace("{{resetLink}}", resetLink),
-      });
-      res.status(200).json({ msg: 'Password reset email sent' ,token });
+    const user = await User.findOne({ email });
+    if (!user) return next(new AppError('User not found', 404));
+
+    // توليد OTP عشوائي من 6 أرقام
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // حفظ الـ OTP وتحديد انتهاء صلاحيته بعد 10 دقائق
+    user.otpCode = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 دقائق
+    await user.save();
+
+    // إرسال الـ OTP بالإيميل
+const isEmailSent = await sendEmail({
+    to: user.email,
+    subject: 'Password Reset OTP',
+    html: htmlTemplate(user.name || user.email.split('@')[0], otp)
 })
 
-// 🔄 Reset Password
+    res.status(200).json({ msg: 'OTP sent to email' });
+});
+
 const resetPassword = catchError(async (req, res, next) => {
-    const { token } = req.params;
-    const { password } = req.body;
-      const decoded = jwt.verify(token, process.env.JWT_RESET_SECRET);
-      const user = await User.findById(decoded.id);
-      if (!user) return next(new AppError('User not found', 404));
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
-      await user.save();
-  
-      res.status(200).json({message: 'Password updated successfully',user });
-})
+    const { email, otp, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return next(new AppError('User not found', 404));
+    if (user.otpCode !== otp || user.otpExpires < Date.now()) {
+       return next(new AppError('Invalid or expired OTP', 400)) }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.otpCode = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+    res.status(200).json({ message: 'Password updated successfully' });
+});
+
 
 const protectedRouter=catchError(async (req,res,next)=>{
     let {token}= req.headers

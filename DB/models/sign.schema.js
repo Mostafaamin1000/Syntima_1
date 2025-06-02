@@ -1,5 +1,5 @@
 
-import  { Schema, model } from 'mongoose'
+import mongoose , { Schema, model } from 'mongoose'
 
 
 const schema = new Schema ({

@@ -4,7 +4,7 @@ import mongoose, { Schema, model } from 'mongoose'
 
 const schema = new Schema ({
 user:{
-    type:Schema.Types.ObjectId,
+    type:mongoose.Types.ObjectId,
     ref:'User'
 },
 question:{

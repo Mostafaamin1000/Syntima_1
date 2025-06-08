@@ -2,8 +2,8 @@ import mongoose, { Schema, Types, model } from 'mongoose'
 
 
 const schema = new Schema ({
-    level:{type:Types.ObjectId, ref:"Level"},
-    category:{type:Types.ObjectId, ref:"Category"},
+    level:{type:mongoose.Types.ObjectId, ref:"Level"},
+    category:{type:mongoose.Types.ObjectId, ref:"Category"},
     sign_Url:{type:[String]},
     sign_Text:{type:[String]}, 
     type: { // Question types
@@ -35,9 +35,9 @@ schema.pre('save', function (next) {
 
 
 // Update URLs dynamically
-schema.post('init', function (doc) {
+schema.post('init', function (req, doc) {
     if (doc.sign_Url.length > 0) {
-        doc.sign_Url = doc.sign_Url.map(url => process.env.BASE_URL + "questions/" + url);
+        doc.sign_Url = doc.sign_Url.map(url => `${req.protocol}://${req.headers.host}/uploads/questions/` + url);
     }
 });
 

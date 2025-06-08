@@ -9,6 +9,7 @@ import { globalError } from './src/middlewares/globalError.js'
 import { bootstrap } from './src/modules/bootstrap.js';
 import dotenv from 'dotenv'
 dotenv.config()
+dbConnection()
 const app = express()
 const port =process.env.PORT ||  3000
 app.use(express.json())
@@ -16,6 +17,9 @@ app.use('/uploads', express.static('uploads'));
 app.use(cors())
 bootstrap(app)
 
+app.get('/',(req,res)=>{
+    res.send('Welcome to Synthima!')
+})
 
 //! for unfound Routes 
 app.use('*',(req,res,next)=>{

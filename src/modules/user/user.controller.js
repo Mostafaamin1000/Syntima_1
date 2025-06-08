@@ -15,11 +15,14 @@ let user = await User.findById(req.params.id)
     res.status(201).json({message:"User ---->" , user})
 })
 
-const uploadProfilePic =catchError( async(req,res)=>{
-if(!req.file) return next(new AppError('image not found',404))
-    req.user.image=req.file.filename
-    await req.user.save()
-    res.status(201).json({message:"image uploaded .." ,user: req.user})
+const uploadProfilePic = catchError(async (req, res, next) => {
+  if (!req.file) return next(new AppError('Image not found', 404));
+  const user = await User.findById(req.user._id)
+  if (!user) return next(new AppError('User not found', 404));
+  user.image = req.file.filename
+  await user.save();
+  const imageUrl = `${req.protocol}://${req.headers.host}/uploads/user/${user.image}`;
+  res.status(201).json({ message: "Image uploaded", user ,image: imageUrl});
 })
 
 const updateUser =catchError( async (req,res,next)=>{

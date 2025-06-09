@@ -19,11 +19,11 @@ const getAllDectionaries = catchError( async(req,res,next)=>{
         let apiFeatures =new ApiFeatures(Dectionary.find(),req.query).pagination()
         let dectionaries =await apiFeatures.mongooseQuery
 
-        // 🔧 هنا نضيف الـ base URL للـ gif_Url
+       
         const fullUrl = `${req.protocol}://${req.headers.host}/uploads/dectionary/`
         const formattedDectionaries = dectionaries.map(d => {
             return {
-                ...d._doc, // نرجع الداتا الأصلية
+                ...d._doc, 
                 gif_Url: d.gif_Url ? fullUrl + d.gif_Url : null
             }
         })

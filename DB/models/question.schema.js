@@ -35,10 +35,13 @@ schema.pre('save', function (next) {
 
 
 // Update URLs dynamically
-schema.post('init', function (req, doc) {
-    if (doc.sign_Url.length > 0) {
-        doc.sign_Url = doc.sign_Url.map(url => `${req.protocol}://${req.headers.host}/uploads/questions/` + url);
+schema.post('init', function () {
+    if (this.sign_Url && this.sign_Url.length > 0) {
+        const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // fallback if env is missing
+        this.sign_Url = this.sign_Url.map(url => `${baseUrl}/uploads/questions/${url}`);
     }
 });
+
+
 
 export const Question = model('Question', schema);

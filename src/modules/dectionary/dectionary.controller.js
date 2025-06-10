@@ -15,12 +15,23 @@ const getAllDectionaries = catchError( async(req,res,next)=>{
     let {token} =req.headers
     jwt.verify(token,'3mkDarsh',async (err,decoded)=>{
         if(err) return next(new AppError('Invalid Token ..',401))
-            let apiFeatures =new ApiFeatures(Dectionary.find(),req.query).pagination()
-            let dectionaries =await apiFeatures.mongooseQuery
-            res.json({message:"all dectionaries : .. ",page:apiFeatures.pageNumber,dectionaries})
+        
+        let apiFeatures =new ApiFeatures(Dectionary.find(),req.query).pagination()
+        let dectionaries =await apiFeatures.mongooseQuery
+
+       
+        const fullUrl = `${req.protocol}://${req.headers.host}/uploads/dectionary/`
+        const formattedDectionaries = dectionaries.map(d => {
+            return {
+                ...d._doc, 
+                gif_Url: d.gif_Url ? fullUrl + d.gif_Url : null
+            }
         })
-}
-)
+
+        res.json({message:"all dectionaries : .. ", page:apiFeatures.pageNumber, dectionaries: formattedDectionaries})
+    })
+})
+
 
 
 const deleteDectionary = catchError(  async(req,res)=>{

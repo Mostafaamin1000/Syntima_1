@@ -20,6 +20,16 @@ const signinVal= joi.object({
 })
 
 
+const resetPasswordVal= joi.object({
+    email:joi.string().email().required(),
+    otp:joi.string().required(),
+    password:joi.string().min(7).max(40).pattern(/^[A-Za-z][A-Za-z0-9]{7,39}$/).required().messages({
+        'string.pattern.base': 'Password must be between 8-40 characters long',
+        'string.min': 'Password must be at least 8 characters long',
+        'string.max': 'Password must be no longer than 40 characters',
+        'string.empty': 'Password is required'})
+})
+
 
 const changePasswordVal= joi.object({
     email:joi.string().email().required(),
@@ -39,5 +49,6 @@ const changePasswordVal= joi.object({
 export{
     signupVal,
     signinVal ,
-    changePasswordVal
+    changePasswordVal,
+    resetPasswordVal
 }
